@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE BLADE CO — Barbershop</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:wght@300;400;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f8f5ef;--white:#ffffff;--cream:#f0ebe0;--card:#fdfaf5;
+  --border:#e0d8c8;--border2:#ccc3b0;
+  --gold:#b8943a;--gold-light:#d4aa55;--gold-dim:rgba(184,148,58,0.12);
+  --dark:#1a1612;--dark2:#2d2820;--text:#4a3f30;--grey:#9a8f80;
+  --shadow:0 4px 30px rgba(180,148,58,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-track{background:var(--bg);} ::-webkit-scrollbar-thumb{background:var(--gold);}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.2rem 4rem;background:rgba(248,245,239,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:box-shadow 0.4s;}
+nav.scrolled{box-shadow:0 2px 20px rgba(180,148,58,0.1);}
+.nav-logo{font-family:'Bebas Neue';font-size:1.7rem;letter-spacing:5px;color:var(--dark);text-decoration:none;display:flex;flex-direction:column;line-height:1;}
+.nav-logo span{color:var(--gold);}
+.nav-logo-sub{font-family:'Cormorant Garamond';font-size:0.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--grey);margin-top:1px;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{text-decoration:none;color:var(--text);font-family:'Cormorant Garamond';font-size:0.88rem;letter-spacing:2px;text-transform:uppercase;transition:color 0.3s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:1rem;}
+.nav-social{color:var(--grey);text-decoration:none;font-size:1rem;transition:color 0.3s;display:flex;align-items:center;}
+.nav-social:hover{color:var(--gold);}
+.nav-cta{background:var(--gold);color:var(--white);padding:0.65rem 1.8rem;font-family:'Cormorant Garamond';font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;text-decoration:none;border:none;}
+.nav-cta:hover{background:var(--gold-light);transform:translateY(-1px);}
+
+#hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:0 4rem;}
+.hero-img{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=1920&q=80') center/cover no-repeat;z-index:0;}
+.hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(248,245,239,0.97) 45%,rgba(248,245,239,0.65) 70%,rgba(248,245,239,0.2) 100%);}
+.hero-content{position:relative;z-index:2;max-width:680px;}
+.hero-eyebrow{font-family:'Cormorant Garamond';font-size:0.8rem;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;opacity:0;animation:fadeUp 1s 0.3s forwards;display:flex;align-items:center;gap:0.8rem;}
+.hero-eyebrow::before{content:'';width:30px;height:1px;background:var(--gold);}
+.hero-title{font-family:'Playfair Display';font-size:clamp(3.5rem,7vw,6.5rem);font-weight:900;line-height:0.95;color:var(--dark);margin-bottom:1.5rem;opacity:0;animation:fadeUp 1s 0.5s forwards;}
+.hero-title em{font-style:italic;color:var(--gold);}
+.hero-sub{font-size:1.15rem;font-weight:300;color:var(--grey);line-height:1.8;max-width:400px;margin-bottom:3rem;opacity:0;animation:fadeUp 1s 0.7s forwards;}
+.hero-actions{display:flex;gap:1.5rem;align-items:center;opacity:0;animation:fadeUp 1s 0.9s forwards;}
+.btn-primary{background:var(--gold);color:var(--white);border:none;padding:1rem 2.5rem;font-family:'Cormorant Garamond';font-size:1rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.3s;display:inline-block;}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 8px 25px rgba(184,148,58,0.3);}
+.btn-outline{color:var(--dark);text-decoration:none;font-size:0.9rem;letter-spacing:2px;text-transform:uppercase;border-bottom:1.5px solid var(--border2);padding-bottom:2px;transition:all 0.3s;}
+.btn-outline:hover{color:var(--gold);border-color:var(--gold);}
+.hero-badge{position:absolute;right:7rem;bottom:7rem;width:150px;height:150px;border:1.5px solid var(--gold);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;z-index:2;opacity:0;animation:fadeIn 1s 1.2s forwards,rotate 25s 1.2s linear infinite;}
+.hero-badge-num{font-family:'Playfair Display';font-size:2.2rem;color:var(--dark);font-weight:900;line-height:1;}
+.hero-badge-text{font-family:'Bebas Neue';font-size:0.7rem;letter-spacing:3px;color:var(--gold);}
+.hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.5rem;opacity:0;animation:fadeIn 1s 1.5s forwards;}
+.hero-scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollAnim 2s 1.5s infinite;}
+.hero-scroll-text{font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--grey);}
+@keyframes scrollAnim{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+section{padding:7rem 4rem;}
+.section-label{font-family:'Cormorant Garamond';font-size:0.75rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.8rem;}
+.section-label::before{content:'';width:25px;height:1px;background:var(--gold);}
+.section-title{font-family:'Playfair Display';font-size:clamp(2.2rem,4vw,3.2rem);font-weight:700;color:var(--dark);line-height:1.1;margin-bottom:1.2rem;}
+.section-title em{font-style:italic;color:var(--gold);}
+.divider{width:50px;height:1.5px;background:var(--gold);margin-bottom:3rem;}
+
+.stats-band{background:var(--dark);padding:2.5rem 4rem;display:flex;justify-content:space-around;align-items:center;gap:2rem;}
+.stat-item{text-align:center;}
+.stat-num{font-family:'Bebas Neue';font-size:3rem;color:var(--gold);line-height:1;}
+.stat-label{font-family:'Cormorant Garamond';font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+
+#services{background:var(--white);}
+.services-top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;}
+.services-socials{display:flex;gap:0.8rem;padding-bottom:3rem;}
+.social-btn{display:inline-flex;align-items:center;gap:0.6rem;text-decoration:none;border:1.5px solid var(--border2);padding:0.65rem 1.3rem;color:var(--text);font-size:0.85rem;letter-spacing:1px;text-transform:uppercase;transition:all 0.3s;font-family:'Cormorant Garamond';}
+.social-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
+.social-btn svg{width:15px;height:15px;fill:currentColor;flex-shrink:0;}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--border);}
+.service-card{background:var(--card);padding:2.5rem 2rem;position:relative;overflow:hidden;transition:all 0.4s;}
+.service-card::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--gold);transition:width 0.5s;}
+.service-card:hover::after{width:100%;}
+.service-card:hover{background:var(--white);box-shadow:var(--shadow);}
+.service-num{font-family:'Bebas Neue';font-size:3rem;color:var(--border);line-height:1;margin-bottom:1rem;transition:color 0.3s;}
+.service-card:hover .service-num{color:var(--gold-dim);}
+.service-name{font-family:'Playfair Display';font-size:1.3rem;color:var(--dark);margin-bottom:0.5rem;}
+.service-desc{font-size:0.95rem;color:var(--grey);line-height:1.6;margin-bottom:1.5rem;}
+.service-price{font-family:'Cormorant Garamond';font-size:1.5rem;font-weight:600;color:var(--gold);}
+
+#gallery{background:var(--cream);}
+.gallery-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(3,200px);gap:6px;margin-top:2rem;}
+.gallery-item{overflow:hidden;position:relative;background:var(--border);}
+.gallery-item:nth-child(1){grid-column:1/5;grid-row:1/3;}
+.gallery-item:nth-child(2){grid-column:5/9;grid-row:1/2;}
+.gallery-item:nth-child(3){grid-column:9/13;grid-row:1/2;}
+.gallery-item:nth-child(4){grid-column:5/8;grid-row:2/3;}
+.gallery-item:nth-child(5){grid-column:8/13;grid-row:2/4;}
+.gallery-item:nth-child(6){grid-column:1/5;grid-row:3/4;}
+.gallery-item:nth-child(7){grid-column:5/8;grid-row:3/4;}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s;}
+.gallery-item:hover img{transform:scale(1.06);}
+.gallery-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:0.85rem;letter-spacing:3px;color:var(--border2);transition:all 0.4s;}
+.gallery-item:hover .gallery-placeholder{color:var(--gold);}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,22,18,0.65),transparent);opacity:0;transition:opacity 0.4s;display:flex;align-items:flex-end;padding:1rem;}
+.gallery-item:hover .gallery-overlay{opacity:1;}
+.gallery-tag{font-family:'Cormorant Garamond';font-size:0.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--bg);background:rgba(26,22,18,0.75);padding:0.3rem 0.8rem;}
+
+#apropos{background:var(--white);}
+.about-layout{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.about-text p{font-size:1.1rem;font-weight:300;color:var(--text);line-height:1.9;margin-bottom:1.5rem;}
+.about-text p strong{color:var(--gold);font-weight:600;}
+.about-values{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem;}
+.about-value{border:1.5px solid var(--border);padding:1.3rem;transition:all 0.3s;background:var(--card);}
+.about-value:hover{border-color:var(--gold);box-shadow:var(--shadow);}
+.about-value-icon{font-size:1.4rem;margin-bottom:0.5rem;}
+.about-value-title{font-family:'Playfair Display';font-size:1rem;color:var(--dark);margin-bottom:0.3rem;}
+.about-value-desc{font-size:0.85rem;color:var(--grey);line-height:1.5;}
+.about-right{display:flex;flex-direction:column;gap:1.5rem;}
+.about-map{width:100%;height:280px;border:1.5px solid var(--border);overflow:hidden;}
+.about-map iframe{width:100%;height:100%;border:0;display:block;}
+.about-address{background:var(--card);border:1.5px solid var(--border);padding:1.5rem;}
+.about-address-title{font-family:'Bebas Neue';font-size:1rem;letter-spacing:4px;color:var(--gold);margin-bottom:1rem;}
+.about-address-item{display:flex;gap:1rem;align-items:flex-start;padding:0.7rem 0;border-bottom:1px solid var(--border);}
+.about-address-item:last-child{border-bottom:none;}
+.about-address-icon{color:var(--gold);flex-shrink:0;font-size:1rem;margin-top:3px;}
+.about-address-text{font-size:0.98rem;color:var(--text);line-height:1.5;}
+.about-address-text a{color:var(--gold);text-decoration:none;transition:color 0.3s;}
+.about-address-text a:hover{color:var(--gold-light);}
+
+#booking{background:var(--cream);}
+.booking-layout{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.booking-form{display:flex;flex-direction:column;gap:1.2rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-group{display:flex;flex-direction:column;gap:0.4rem;}
+.form-group label{font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--grey);}
+.form-group input,.form-group select,.form-group textarea{background:var(--white);border:1.5px solid var(--border);color:var(--dark);padding:0.9rem 1rem;font-family:'Cormorant Garamond';font-size:1rem;outline:none;transition:border-color 0.3s;width:100%;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);}
+.form-group select option{background:var(--white);}
+.form-group textarea{resize:none;height:100px;}
+.booking-info{padding-top:0.5rem;}
+.info-item{display:flex;gap:1.5rem;align-items:flex-start;padding:1.4rem 0;border-bottom:1px solid var(--border);}
+.info-icon{font-size:1.4rem;color:var(--gold);flex-shrink:0;margin-top:2px;}
+.info-label{font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-bottom:0.3rem;}
+.info-value{font-size:1rem;color:var(--dark);line-height:1.5;}
+
+#team{background:var(--white);}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;}
+.team-card{position:relative;overflow:hidden;}
+.team-photo{width:100%;aspect-ratio:3/4;background:var(--cream);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;border:1.5px solid var(--border);}
+.team-avatar{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;transition:transform 0.5s;}
+.team-card:hover .team-avatar{transform:scale(1.03);}
+.team-avatar-circle{width:100px;height:100px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display';font-size:2.5rem;color:var(--gold);background:var(--white);}
+.team-info{padding:1.2rem 0 0;}
+.team-name{font-family:'Playfair Display';font-size:1.4rem;color:var(--dark);margin-bottom:0.3rem;}
+.team-role{font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem;}
+.team-specialties{display:flex;flex-wrap:wrap;gap:0.4rem;}
+.tag{font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--grey);border:1px solid var(--border);padding:0.2rem 0.7rem;transition:all 0.3s;}
+.team-card:hover .tag{border-color:var(--gold);color:var(--gold);}
+
+#reviews{background:var(--dark);}
+#reviews .section-label,#reviews .section-label::before{color:rgba(212,170,85,0.9);background:rgba(212,170,85,0.9);}
+#reviews .section-title{color:var(--bg);}
+#reviews .section-title em{color:var(--gold-light);}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1px;background:rgba(255,255,255,0.05);}
+.review-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);padding:2.5rem;transition:background 0.3s;}
+.review-card:hover{background:rgba(255,255,255,0.06);}
+.review-quote{font-family:'Playfair Display';font-size:4rem;color:var(--gold);line-height:0.5;margin-bottom:1.2rem;opacity:0.4;}
+.review-text{font-size:1.05rem;font-weight:300;color:rgba(248,245,239,0.75);line-height:1.7;margin-bottom:1.5rem;font-style:italic;}
+.review-stars{color:var(--gold-light);font-size:0.85rem;letter-spacing:3px;margin-bottom:1rem;}
+.review-author{display:flex;align-items:center;gap:1rem;}
+.author-avatar{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display';font-size:1rem;color:var(--gold);flex-shrink:0;}
+.author-name{font-family:'Cormorant Garamond';font-size:1rem;font-weight:600;color:var(--bg);}
+.author-date{font-size:0.8rem;color:rgba(248,245,239,0.4);}
+
+#contact{background:var(--cream);}
+.contact-layout{display:grid;grid-template-columns:1fr 1.5fr;gap:5rem;align-items:start;}
+.contact-map-wrap{width:100%;aspect-ratio:4/3;border:1.5px solid var(--border);overflow:hidden;}
+.contact-map-wrap iframe{width:100%;height:100%;border:0;display:block;}
+.hours-table{width:100%;border-collapse:collapse;}
+.hours-table tr{border-bottom:1px solid var(--border);}
+.hours-table td{padding:0.8rem 0;font-size:1rem;color:var(--text);}
+.hours-table td:last-child{text-align:right;color:var(--gold);font-weight:600;}
+.hours-table tr.today td{color:var(--dark);font-weight:600;}
+
+footer{background:var(--dark2);padding:4rem 4rem 2rem;}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,0.07);}
+.footer-logo{font-family:'Bebas Neue';font-size:2rem;letter-spacing:5px;color:var(--bg);}
+.footer-logo span{color:var(--gold);}
+.footer-tagline{font-size:0.95rem;color:rgba(255,255,255,0.35);margin-top:0.5rem;line-height:1.6;max-width:260px;}
+.footer-socials-row{display:flex;gap:0.8rem;margin-top:1.5rem;}
+.footer-social-btn{display:inline-flex;align-items:center;gap:0.5rem;text-decoration:none;border:1px solid rgba(255,255,255,0.15);padding:0.65rem 1.2rem;color:rgba(255,255,255,0.5);font-size:0.8rem;letter-spacing:1px;text-transform:uppercase;transition:all 0.3s;font-family:'Cormorant Garamond';}
+.footer-social-btn:hover{border-color:var(--gold);color:var(--gold);}
+.footer-social-btn svg{width:14px;height:14px;fill:currentColor;}
+.footer-col-title{font-family:'Bebas Neue';font-size:0.9rem;letter-spacing:4px;color:var(--gold);margin-bottom:1.2rem;}
+.footer-col a{display:block;color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.95rem;padding:0.35rem 0;transition:color 0.3s;}
+.footer-col a:hover{color:var(--gold);}
+.footer-col p{color:rgba(255,255,255,0.45);font-size:0.95rem;padding:0.25rem 0;line-height:1.6;}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;flex-wrap:wrap;gap:1rem;}
+.footer-copy{font-size:0.8rem;color:rgba(255,255,255,0.25);letter-spacing:1px;}
+
+.toast-msg{position:fixed;bottom:2rem;right:2rem;background:var(--dark);border:1px solid var(--gold);color:var(--gold);padding:1rem 1.5rem;font-size:0.95rem;letter-spacing:1px;z-index:9999;transform:translateY(100px);opacity:0;transition:all 0.4s;}
+.toast-msg.show{transform:translateY(0);opacity:1;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;}.nav-links{display:none;}section{padding:4rem 1.5rem;}#hero{padding:0 1.5rem;}.hero-badge,.hero-scroll{display:none;}.booking-layout,.about-layout,.contact-layout,.footer-top{grid-template-columns:1fr;gap:2.5rem;}.form-row{grid-template-columns:1fr;}.stats-band{flex-wrap:wrap;padding:2rem 1.5rem;}.gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto;}.gallery-item{grid-column:auto!important;grid-row:auto!important;min-height:180px;}footer{padding:3rem 1.5rem 1.5rem;}.services-top{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">THE <span>BLADE</span> CO<div class="nav-logo-sub">Barbershop · Lille</div></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Galerie</a></li>
+    <li><a href="#apropos">À propos</a></li>
+    <li><a href="#team">Équipe</a></li>
+    <li><a href="#reviews">Avis</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="https://instagram.com/thebladeco" target="_blank" class="nav-social" title="Instagram">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://facebook.com/thebladeco" target="_blank" class="nav-social" title="Facebook">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </a>
+    <a href="#booking" class="nav-cta">Réserver</a>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-img"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Barbershop Premium — Lille</p>
+    <h1 class="hero-title">L'Art du<br><em>Rasage</em><br>Précis.</h1>
+    <p class="hero-sub">Une expérience grooming d'exception. Coupes sur-mesure, rasage traditionnel et finitions irréprochables depuis 2014.</p>
+    <div class="hero-actions">
+      <a href="#booking" class="btn-primary">Prendre RDV</a>
+      <a href="#apropos" class="btn-outline">Qui sommes-nous ?</a>
+    </div>
+  </div>
+  <div class="hero-badge">
+    <div class="hero-badge-num">10+</div>
+    <div class="hero-badge-text">ANS<br>D'EXPÉRIENCE</div>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span class="hero-scroll-text">Défiler</span>
+  </div>
+</section>
+
+<div class="stats-band">
+  <div class="stat-item"><div class="stat-num">2400+</div><div class="stat-label">Clients satisfaits</div></div>
+  <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Barbeurs experts</div></div>
+  <div class="stat-item"><div class="stat-num">4.9</div><div class="stat-label">Note Google</div></div>
+  <div class="stat-item"><div class="stat-num">10</div><div class="stat-label">Années d'expérience</div></div>
+</div>
+
+<section id="services">
+  <div class="services-top">
+    <div>
+      <div class="section-label">— Nos prestations</div>
+      <h2 class="section-title">Services &<br><em>Tarifs</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="services-socials">
+      <a href="https://instagram.com/thebladeco" target="_blank" class="social-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Instagram
+      </a>
+      <a href="https://facebook.com/thebladeco" target="_blank" class="social-btn">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Facebook
+      </a>
+    </div>
+  </div>
+  <div class="services-grid reveal" id="services-grid"></div>
+</section>
+
+<section id="gallery">
+  <div class="section-label">— Notre travail</div>
+  <h2 class="section-title">La <em>Galerie</em></h2>
+  <div class="divider"></div>
+  <div class="gallery-grid reveal" id="gallery-grid"></div>
+</section>
+
+<section id="apropos">
+  <div class="about-layout">
+    <div>
+      <div class="section-label">— Notre histoire</div>
+      <h2 class="section-title">Qui<br><em>Sommes-Nous ?</em></h2>
+      <div class="divider"></div>
+      <div class="about-text">
+        <p>Fondé en <strong>2014</strong> au cœur de Lille, <strong>The Blade Co</strong> est né d'une passion simple : offrir à chaque homme une expérience de coupe et de rasage qui dépasse ses attentes.</p>
+        <p>Notre équipe de <strong>barbeurs certifiés</strong> allie techniques traditionnelles et tendances contemporaines pour des résultats toujours impeccables. Chaque passage dans notre salon est un moment pour vous, loin du quotidien.</p>
+        <p>Nous sélectionnons les <strong>meilleurs produits</strong> — cires, huiles de barbe, baumes — pour sublimer votre style et prendre soin de votre peau.</p>
+      </div>
+      <div class="about-values">
+        <div class="about-value"><div class="about-value-icon">✂️</div><div class="about-value-title">Précision</div><div class="about-value-desc">Chaque coupe pensée et exécutée avec soin</div></div>
+        <div class="about-value"><div class="about-value-icon">🏆</div><div class="about-value-title">Excellence</div><div class="about-value-desc">Produits et techniques haut de gamme</div></div>
+        <div class="about-value"><div class="about-value-icon">🤝</div><div class="about-value-title">Écoute</div><div class="about-value-desc">Votre style, vos envies, notre expertise</div></div>
+        <div class="about-value"><div class="about-value-icon">⭐</div><div class="about-value-title">Fidélité</div><div class="about-value-desc">Plus de 2400 clients nous font confiance</div></div>
+      </div>
+    </div>
+    <div class="about-right reveal">
+      <div class="about-map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2530.398!2d3.0613!3d50.6311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c2d57dda00e04b%3A0x40af13e8153a2f0!2sGrand-Place%2C%2059000%20Lille%2C%20France!5e0!3m2!1sfr!2sfr!4v1710000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="about-address">
+        <div class="about-address-title">Nos Coordonnées</div>
+        <div class="about-address-item"><span class="about-address-icon">📍</span><div class="about-address-text">12 Rue de la Paix, 59000 Lille<br><a href="https://maps.google.com/?q=Grand+Place+Lille" target="_blank">Voir sur Google Maps →</a></div></div>
+        <div class="about-address-item"><span class="about-address-icon">📞</span><div class="about-address-text"><a href="tel:+33320000000">03 20 00 00 00</a></div></div>
+        <div class="about-address-item"><span class="about-address-icon">📧</span><div class="about-address-text"><a href="mailto:contact@thebladeco.fr">contact@thebladeco.fr</a></div></div>
+        <div class="about-address-item"><span class="about-address-icon">📸</span><div class="about-address-text"><a href="https://instagram.com/thebladeco" target="_blank">Instagram</a> · <a href="https://facebook.com/thebladeco" target="_blank">Facebook</a></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="booking">
+  <div class="section-label">— Réservation</div>
+  <h2 class="section-title">Prendre un<br><em>Rendez-vous</em></h2>
+  <div class="divider"></div>
+  <div class="booking-layout">
+    <div class="booking-form reveal">
+      <div class="form-row">
+        <div class="form-group"><label>Prénom</label><input type="text" id="f-prenom" placeholder="Jean"></div>
+        <div class="form-group"><label>Nom</label><input type="text" id="f-nom" placeholder="Dupont"></div>
+      </div>
+      <div class="form-group"><label>Email</label><input type="email" id="f-email" placeholder="jean@email.com"></div>
+      <div class="form-group"><label>Téléphone</label><input type="tel" id="f-tel" placeholder="+33 6 00 00 00 00"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Service</label><select id="f-service"></select></div>
+        <div class="form-group"><label>Barbeur</label><select id="f-barbeur"><option>Pas de préférence</option><option>Marcus</option><option>Théo</option><option>Julien</option></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Date</label><input type="date" id="f-date" onchange="updateSlots()"></div>
+        <div class="form-group"><label>Heure</label><select id="f-heure"></select></div>
+      </div>
+      <div class="form-group"><label>Message (optionnel)</label><textarea id="f-message" placeholder="Précisions, demandes particulières..."></textarea></div>
+      <button class="btn-primary" onclick="submitBooking()" style="align-self:flex-start;margin-top:0.5rem;" id="book-btn">Confirmer le RDV</button>
+    </div>
+    <div class="booking-info reveal">
+      <div class="info-item"><div class="info-icon">📍</div><div><div class="info-label">Adresse</div><div class="info-value">12 Rue de la Paix<br>59000 Lille</div></div></div>
+      <div class="info-item"><div class="info-icon">📞</div><div><div class="info-label">Téléphone</div><div class="info-value">03 20 00 00 00</div></div></div>
+      <div class="info-item"><div class="info-icon">📧</div><div><div class="info-label">Email</div><div class="info-value">contact@thebladeco.fr</div></div></div>
+      <div class="info-item"><div class="info-icon">🕐</div><div><div class="info-label">Horaires</div><div class="info-value">Lun – Sam : 9h – 19h<br>Dimanche : Fermé</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="section-label">— Notre équipe</div>
+  <h2 class="section-title">Les <em>Barbeurs</em></h2>
+  <div class="divider"></div>
+  <div class="team-grid">
+    <div class="team-card reveal"><div class="team-photo" style="background:linear-gradient(160deg,#f0ebe0,#e4ddd0);"><div class="team-avatar"><div class="team-avatar-circle">M</div></div></div><div class="team-info"><h3 class="team-name">Marcus</h3><p class="team-role">Maître Barbeur · Fondateur</p><div class="team-specialties"><span class="tag">Fade</span><span class="tag">Barbe</span><span class="tag">Rasage</span></div></div></div>
+    <div class="team-card reveal"><div class="team-photo" style="background:linear-gradient(160deg,#ece7db,#e0d8c8);"><div class="team-avatar"><div class="team-avatar-circle">T</div></div></div><div class="team-info"><h3 class="team-name">Théo</h3><p class="team-role">Barbeur Senior</p><div class="team-specialties"><span class="tag">Undercut</span><span class="tag">Pompadour</span><span class="tag">Coloration</span></div></div></div>
+    <div class="team-card reveal"><div class="team-photo" style="background:linear-gradient(160deg,#f2ede3,#e8e2d4);"><div class="team-avatar"><div class="team-avatar-circle">J</div></div></div><div class="team-info"><h3 class="team-name">Julien</h3><p class="team-role">Barbeur & Styliste</p><div class="team-specialties"><span class="tag">Textures</span><span class="tag">Styling</span><span class="tag">Soins</span></div></div></div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="section-label">— Témoignages</div>
+  <h2 class="section-title">Ce que disent<br>nos <em>clients</em></h2>
+  <div class="divider" style="background:var(--gold-light);"></div>
+  <div class="reviews-grid reveal">
+    <div class="review-card"><div class="review-quote">"</div><p class="review-text">Le meilleur barbershop de Lille. Marcus est un artiste. Je repars toujours avec une coupe impeccable.</p><div class="review-stars">★★★★★</div><div class="review-author"><div class="author-avatar">A</div><div><div class="author-name">Antoine M.</div><div class="author-date">Il y a 2 semaines</div></div></div></div>
+    <div class="review-card"><div class="review-quote">"</div><p class="review-text">Ambiance incroyable, équipe super pro. Le forfait premium vaut vraiment chaque euro. Je ne vais plus nulle part ailleurs.</p><div class="review-stars">★★★★★</div><div class="review-author"><div class="author-avatar">K</div><div><div class="author-name">Karim B.</div><div class="author-date">Il y a 1 mois</div></div></div></div>
+    <div class="review-card"><div class="review-quote">"</div><p class="review-text">Théo a réalisé exactement ce que je voulais. Très à l'écoute, résultat parfait. Je recommande les yeux fermés.</p><div class="review-stars">★★★★★</div><div class="review-author"><div class="author-avatar">R</div><div><div class="author-name">Romain T.</div><div class="author-date">Il y a 3 semaines</div></div></div></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-label">— Nous trouver</div>
+  <h2 class="section-title">Contact &<br><em>Horaires</em></h2>
+  <div class="divider"></div>
+  <div class="contact-layout">
+    <div class="contact-map-wrap reveal">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2530.398!2d3.0613!3d50.6311!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c2d57dda00e04b%3A0x40af13e8153a2f0!2sGrand-Place%2C%2059000%20Lille%2C%20France!5e0!3m2!1sfr!2sfr!4v1710000000000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div class="reveal">
+      <p style="font-size:1.1rem;color:var(--grey);line-height:1.7;margin-bottom:2.5rem;">Situés en plein cœur de Lille, à deux pas de la Grand-Place. Parkings disponibles à proximité.</p>
+      <table class="hours-table">
+        <tr><td>Lundi</td><td>9h00 – 19h00</td></tr>
+        <tr><td>Mardi</td><td>9h00 – 19h00</td></tr>
+        <tr><td>Mercredi</td><td>9h00 – 19h00</td></tr>
+        <tr><td>Jeudi</td><td>9h00 – 19h00</td></tr>
+        <tr><td>Vendredi</td><td>9h00 – 20h00</td></tr>
+        <tr><td>Samedi</td><td>9h00 – 18h00</td></tr>
+        <tr><td style="color:var(--grey)">Dimanche</td><td style="color:var(--grey)">Fermé</td></tr>
+      </table>
+      <div style="margin-top:2.5rem;display:flex;gap:1.5rem;flex-wrap:wrap;">
+        <a href="#booking" class="btn-primary">Réserver maintenant</a>
+        <a href="tel:+33320000000" class="btn-outline" style="display:flex;align-items:center;">📞 03 20 00 00 00</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">THE <span>BLADE</span> CO</div>
+      <p class="footer-tagline">Le barbershop premium de Lille depuis 2014. Coupes, rasage et soins haut de gamme.</p>
+      <div class="footer-socials-row">
+        <a href="https://instagram.com/thebladeco" target="_blank" class="footer-social-btn">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          Instagram
+        </a>
+        <a href="https://facebook.com/thebladeco" target="_blank" class="footer-social-btn">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Facebook
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Navigation</div>
+      <a href="#services">Services & Tarifs</a>
+      <a href="#gallery">Galerie</a>
+      <a href="#apropos">À propos</a>
+      <a href="#team">Notre équipe</a>
+      <a href="#reviews">Avis clients</a>
+      <a href="#booking">Réservation</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Contact</div>
+      <p>📍 12 Rue de la Paix<br>59000 Lille</p>
+      <p>📞 03 20 00 00 00</p>
+      <p>📧 contact@thebladeco.fr</p>
+      <p style="margin-top:0.8rem;">Lun–Sam : 9h–19h</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 The Blade Co — Tous droits réservés</p>
+    <p class="footer-copy">Conçu avec soin ✂️</p>
+  </div>
+</footer>
+
+<div class="toast-msg" id="toast"></div>
+
+<script>
+const HOURS_ALL=['09:00','09:30','10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30'];
+function getData(k,d){try{return JSON.parse(localStorage.getItem('br_'+k))||d;}catch(e){return d;}}
+function setData(k,v){localStorage.setItem('br_'+k,JSON.stringify(v));}
+function defaultServices(){return[{id:1,name:'Coupe Classique',desc:'Coupe ciseaux ou tondeuse, shampoing, séchage et finition styling soignée.',price:'25'},{id:2,name:'Rasage Traditionnel',desc:'Rasage au blaireau, serviette chaude et lame droite pour une finition rasoir.',price:'30'},{id:3,name:'Coupe + Barbe',desc:'Pack complet coupe & taille de barbe avec modelage et soin hydratant.',price:'45'},{id:4,name:'Forfait Premium',desc:'Coupe, rasage, soin du visage, modelage barbe et finitions haut de gamme.',price:'70'},{id:5,name:'Taille Barbe',desc:'Sculpture et modelage de barbe avec produits de soin professionnels.',price:'20'},{id:6,name:'Junior (- 12 ans)',desc:'Coupe enfant dans le calme et la bonne humeur, résultat garanti.',price:'18'}];}
+function renderServices(){const s=getData('services',defaultServices());document.getElementById('services-grid').innerHTML=s.map((sv,i)=>`<div class="service-card"><div class="service-num">0${i+1}</div><h3 class="service-name">${sv.name}</h3><p class="service-desc">${sv.desc}</p><div class="service-price">${sv.price} €</div></div>`).join('');const sel=document.getElementById('f-service');if(sel)sel.innerHTML=s.map(sv=>`<option>${sv.name} — ${sv.price}€</option>`).join('');}
+const defLabels=['Coupe Fade','Barbe Sculptée','Rasage Lame','Undercut','Premium Combo','Classique','Styling'];
+const bgG=['linear-gradient(135deg,#e8e2d4,#d8d0c0)','linear-gradient(135deg,#e0dace,#ccc3b0)','linear-gradient(135deg,#ece7db,#ddd5c5)','linear-gradient(135deg,#d8d0c0,#c8bfae)','linear-gradient(135deg,#e4ddd0,#d4cabe)','linear-gradient(135deg,#eae4d8,#dbd3c3)','linear-gradient(135deg,#ddd5c5,#ccc3b0)'];
+function renderGallery(){const photos=getData('photos',[]);const grid=document.getElementById('gallery-grid');let html='';for(let i=0;i<7;i++){const p=photos[i];const label=p?(p.label||`Photo ${i+1}`):defLabels[i];const inner=p?`<img src="${p.src}" alt="${label}">`:`<div class="gallery-placeholder" style="background:${bgG[i]}">✂</div>`;html+=`<div class="gallery-item">${inner}<div class="gallery-overlay"><span class="gallery-tag">${label}</span></div></div>`;}grid.innerHTML=html;}
+function updateSlots(){const d=document.getElementById('f-date').value;const blocked=getData('blocked',{});const resas=getData('reservations',[]);const unavail=[...(blocked[d]||[]),...resas.filter(r=>r.date===d&&r.status!=='cancelled').map(r=>r.heure)];const sel=document.getElementById('f-heure');sel.innerHTML=HOURS_ALL.filter(h=>!unavail.includes(h)).map(h=>`<option>${h}</option>`).join('');if(!sel.innerHTML)sel.innerHTML='<option disabled>Aucun créneau disponible</option>';}
+window.addEventListener('load',()=>{const d=document.getElementById('f-date');if(d)d.min=new Date().toISOString().split('T')[0];updateSlots();});
+function submitBooking(){const prenom=document.getElementById('f-prenom').value.trim();const nom=document.getElementById('f-nom').value.trim();const date=document.getElementById('f-date').value;const heure=document.getElementById('f-heure').value;if(!prenom||!nom||!date||!heure){toast('⚠ Veuillez remplir les champs obligatoires');return;}const resas=getData('reservations',[]);resas.push({id:Date.now(),prenom,nom,email:document.getElementById('f-email').value,tel:document.getElementById('f-tel').value,service:document.getElementById('f-service').value,barbeur:document.getElementById('f-barbeur').value,date,heure,message:document.getElementById('f-message').value,status:'pending'});setData('reservations',resas);const btn=document.getElementById('book-btn');btn.textContent='✓ RDV envoyé !';btn.style.background='#2d6a4f';['f-prenom','f-nom','f-email','f-tel','f-message'].forEach(id=>{document.getElementById(id).value='';});document.getElementById('f-date').value='';updateSlots();setTimeout(()=>{btn.textContent='Confirmer le RDV';btn.style.background='';},3000);toast('✓ Votre demande a bien été envoyée !');}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',scrollY>50));
+const obs=new IntersectionObserver(entries=>entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const days=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+const today=days[new Date().getDay()];
+document.querySelectorAll('.hours-table tr').forEach(row=>{const td=row.querySelector('td');if(td&&td.textContent.trim()===today){row.classList.add('today');td.innerHTML=`<strong>${today} ← Aujourd'hui</strong>`;}});
+renderServices();renderGallery();
+</script>
+</body>
+</html>

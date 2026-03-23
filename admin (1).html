@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — BLVCK RAZOR</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:#0a0a0a; --dark:#111; --card:#161616; --border:#2a2a2a;
+  --gold:#c9a84c; --gold-light:#e8c97a; --white:#f5f0e8;
+  --grey:#888; --text:#d4cfc6; --red:#c0392b; --green:#27ae60;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--black);color:var(--text);font-family:'Cormorant Garamond',serif;min-height:100vh;}
+::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-track{background:var(--black);} ::-webkit-scrollbar-thumb{background:var(--gold);}
+
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:1000;flex-direction:column;gap:2rem;}
+.login-logo{font-family:'Bebas Neue';font-size:2.5rem;letter-spacing:6px;color:var(--gold);}
+.login-logo span{color:var(--white);}
+.login-box{background:var(--card);border:1px solid var(--border);padding:2.5rem;width:360px;display:flex;flex-direction:column;gap:1.2rem;}
+.login-title{font-family:'Playfair Display';font-size:1.4rem;color:var(--white);text-align:center;}
+.login-box label{font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--grey);}
+.login-box input{background:var(--dark);border:1px solid var(--border);color:var(--white);padding:0.9rem 1rem;font-family:'Cormorant Garamond';font-size:1rem;outline:none;width:100%;transition:border-color 0.3s;}
+.login-box input:focus{border-color:var(--gold);}
+.login-error{color:var(--red);font-size:0.9rem;text-align:center;display:none;}
+.btn-gold{background:var(--gold);color:var(--black);border:none;padding:0.9rem 2rem;font-family:'Cormorant Garamond';font-size:1rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;width:100%;}
+.btn-gold:hover{background:var(--gold-light);}
+.btn-outline{background:transparent;color:var(--gold);border:1px solid var(--gold);padding:0.7rem 1.5rem;font-family:'Cormorant Garamond';font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;}
+.btn-outline:hover{background:var(--gold);color:var(--black);}
+.btn-danger{background:transparent;color:var(--red);border:1px solid var(--red);padding:0.5rem 1rem;font-family:'Cormorant Garamond';font-size:0.85rem;letter-spacing:1px;cursor:pointer;transition:all 0.3s;}
+.btn-danger:hover{background:var(--red);color:#fff;}
+.btn-sm{background:var(--gold);color:var(--black);border:none;padding:0.4rem 1rem;font-family:'Cormorant Garamond';font-size:0.85rem;letter-spacing:1px;cursor:pointer;transition:all 0.3s;}
+.btn-sm:hover{background:var(--gold-light);}
+
+/* LAYOUT */
+#app{display:none;min-height:100vh;}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:240px;background:var(--dark);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:1.5rem 0;}
+.sidebar-logo{font-family:'Bebas Neue';font-size:1.6rem;letter-spacing:4px;color:var(--gold);padding:0 1.5rem 1.5rem;border-bottom:1px solid var(--border);}
+.sidebar-logo span{color:var(--white);}
+.sidebar-badge{font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--grey);padding:0.3rem 0.6rem;background:var(--card);border:1px solid var(--border);display:inline-block;margin-top:0.3rem;}
+.nav-items{flex:1;padding:1.5rem 0;}
+.nav-item{display:flex;align-items:center;gap:0.8rem;padding:0.9rem 1.5rem;cursor:pointer;transition:all 0.3s;color:var(--grey);font-size:0.95rem;letter-spacing:1px;border-left:2px solid transparent;}
+.nav-item:hover{color:var(--white);background:rgba(255,255,255,0.03);}
+.nav-item.active{color:var(--gold);border-left-color:var(--gold);background:rgba(201,168,76,0.05);}
+.nav-item .icon{font-size:1.1rem;width:20px;text-align:center;}
+.nav-badge{background:var(--gold);color:var(--black);font-size:0.7rem;padding:0.15rem 0.5rem;border-radius:10px;font-weight:700;margin-left:auto;}
+.sidebar-footer{padding:1.5rem;border-top:1px solid var(--border);}
+.sidebar-link{display:block;text-decoration:none;color:var(--grey);font-size:0.85rem;letter-spacing:1px;padding:0.4rem 0;transition:color 0.3s;}
+.sidebar-link:hover{color:var(--gold);}
+
+.main{margin-left:240px;padding:2.5rem;min-height:100vh;}
+.page-header{margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+.page-title{font-family:'Playfair Display';font-size:2rem;color:var(--white);margin-bottom:0.3rem;}
+.page-sub{color:var(--grey);font-size:0.95rem;}
+
+/* TABS */
+.tab-section{display:none;}
+.tab-section.active{display:block;}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);padding:1.5rem;margin-bottom:1rem;}
+.card-title{font-family:'Playfair Display';font-size:1.1rem;color:var(--white);margin-bottom:1rem;}
+
+/* RESERVATIONS */
+.resa-filters{display:flex;gap:0.8rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.filter-btn{padding:0.5rem 1.2rem;border:1px solid var(--border);background:transparent;color:var(--grey);font-family:'Cormorant Garamond';font-size:0.9rem;letter-spacing:1px;cursor:pointer;transition:all 0.3s;}
+.filter-btn.active,.filter-btn:hover{border-color:var(--gold);color:var(--gold);}
+.resa-list{display:flex;flex-direction:column;gap:0.8rem;}
+.resa-card{background:var(--dark);border:1px solid var(--border);padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;transition:border-color 0.3s;}
+.resa-card:hover{border-color:var(--gold);}
+.resa-card.confirmed{border-left:3px solid var(--green);}
+.resa-card.cancelled{border-left:3px solid var(--red);opacity:0.6;}
+.resa-card.pending{border-left:3px solid var(--gold);}
+.resa-info{flex:1;}
+.resa-name{font-family:'Playfair Display';font-size:1.1rem;color:var(--white);}
+.resa-details{font-size:0.9rem;color:var(--grey);margin-top:0.2rem;}
+.resa-details span{color:var(--text);margin-right:0.8rem;}
+.resa-actions{display:flex;gap:0.5rem;align-items:center;}
+.status-badge{padding:0.25rem 0.8rem;font-size:0.75rem;letter-spacing:1px;text-transform:uppercase;}
+.status-badge.pending{background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid var(--gold);}
+.status-badge.confirmed{background:rgba(39,174,96,0.15);color:var(--green);border:1px solid var(--green);}
+.status-badge.cancelled{background:rgba(192,57,43,0.15);color:var(--red);border:1px solid var(--red);}
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--grey);}
+.empty-icon{font-size:3rem;margin-bottom:1rem;}
+.empty-text{font-size:1.1rem;}
+
+/* SERVICES EDITOR */
+.services-editor{display:grid;gap:1rem;}
+.service-editor-card{background:var(--dark);border:1px solid var(--border);padding:1.5rem;display:grid;grid-template-columns:1fr 1fr auto;gap:1rem;align-items:end;}
+.form-group{display:flex;flex-direction:column;gap:0.4rem;}
+.form-group.full{grid-column:1/-1;}
+.form-group label{font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--grey);}
+.form-group input,.form-group textarea,.form-group select{background:var(--card);border:1px solid var(--border);color:var(--white);padding:0.7rem 0.9rem;font-family:'Cormorant Garamond';font-size:1rem;outline:none;transition:border-color 0.3s;width:100%;}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--gold);}
+.add-btn{display:flex;align-items:center;gap:0.5rem;cursor:pointer;color:var(--gold);font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;padding:1rem 0;border-top:1px dashed var(--border);transition:color 0.3s;}
+.add-btn:hover{color:var(--gold-light);}
+
+/* PHOTOS */
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.photo-item{position:relative;aspect-ratio:1;background:var(--dark);border:1px solid var(--border);overflow:hidden;cursor:pointer;}
+.photo-item img{width:100%;height:100%;object-fit:cover;}
+.photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--border);}
+.photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s;gap:0.5rem;}
+.photo-item:hover .photo-overlay{opacity:1;}
+.photo-del{background:var(--red);color:#fff;border:none;padding:0.4rem 0.8rem;cursor:pointer;font-size:0.8rem;}
+.photo-label-input{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.85);padding:0.3rem 0.5rem;}
+.photo-label-input input{background:transparent;border:none;color:var(--gold);font-family:'Cormorant Garamond';font-size:0.8rem;letter-spacing:1px;width:100%;outline:none;}
+.upload-zone{border:2px dashed var(--border);padding:3rem;text-align:center;cursor:pointer;transition:all 0.3s;background:var(--dark);}
+.upload-zone:hover{border-color:var(--gold);background:rgba(201,168,76,0.03);}
+.upload-zone input{display:none;}
+.upload-icon{font-size:2.5rem;margin-bottom:0.8rem;}
+.upload-text{color:var(--grey);font-size:1rem;}
+.upload-sub{font-size:0.85rem;color:var(--border);margin-top:0.4rem;}
+
+/* CALENDAR */
+.cal-controls{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;}
+.cal-btn{background:transparent;border:1px solid var(--border);color:var(--text);padding:0.5rem 1rem;cursor:pointer;font-size:1rem;transition:all 0.3s;}
+.cal-btn:hover{border-color:var(--gold);color:var(--gold);}
+.cal-month{font-family:'Playfair Display';font-size:1.3rem;color:var(--white);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal-day-header{text-align:center;padding:0.5rem;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--grey);}
+.cal-day{background:var(--dark);border:1px solid var(--border);padding:0.6rem;min-height:80px;cursor:pointer;transition:all 0.3s;position:relative;}
+.cal-day:hover{border-color:var(--gold);}
+.cal-day.other-month{opacity:0.3;}
+.cal-day.today{border-color:var(--gold);}
+.cal-day.has-resa::after{content:'';position:absolute;bottom:4px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--gold);}
+.cal-day-num{font-size:0.95rem;color:var(--white);font-weight:600;}
+.cal-day-slots{margin-top:0.4rem;display:flex;flex-wrap:wrap;gap:2px;}
+.slot-chip{font-size:0.65rem;padding:1px 4px;letter-spacing:0.5px;}
+.slot-chip.blocked{background:rgba(192,57,43,0.3);color:var(--red);border:1px solid var(--red);}
+.slot-chip.booked{background:rgba(201,168,76,0.2);color:var(--gold);border:1px solid var(--gold);}
+
+.slot-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;align-items:center;justify-content:center;}
+.slot-modal.open{display:flex;}
+.slot-modal-box{background:var(--card);border:1px solid var(--border);padding:2rem;width:400px;max-height:80vh;overflow-y:auto;}
+.slot-modal-title{font-family:'Playfair Display';font-size:1.3rem;color:var(--white);margin-bottom:1.5rem;}
+.slots-list{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1.5rem;}
+.slot-toggle{padding:0.6rem;text-align:center;border:1px solid var(--border);cursor:pointer;font-size:0.9rem;transition:all 0.3s;color:var(--text);}
+.slot-toggle:hover{border-color:var(--gold);}
+.slot-toggle.blocked{background:rgba(192,57,43,0.2);border-color:var(--red);color:var(--red);}
+.slot-toggle.booked{background:rgba(201,168,76,0.1);border-color:var(--gold);color:var(--gold);cursor:not-allowed;}
+.slot-modal-actions{display:flex;justify-content:flex-end;gap:1rem;}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--card);border:1px solid var(--gold);color:var(--gold);padding:1rem 1.5rem;font-size:0.95rem;letter-spacing:1px;z-index:9999;transform:translateY(100px);opacity:0;transition:all 0.4s;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.stat-card{background:var(--card);border:1px solid var(--border);padding:1.5rem;text-align:center;}
+.stat-val{font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold);}
+.stat-lbl{font-size:0.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--grey);margin-top:0.2rem;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-logo">BLVCK<span>RAZOR</span></div>
+  <div class="login-box">
+    <div class="login-title">Espace Admin</div>
+    <div class="form-group">
+      <label>Mot de passe</label>
+      <input type="password" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-error" id="login-error">Mot de passe incorrect</div>
+    <button class="btn-gold" onclick="doLogin()">Se connecter</button>
+    <p style="text-align:center;font-size:0.8rem;color:var(--grey);">Espace réservé au gérant</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">BLVCK<span>RAZOR</span><br><span class="sidebar-badge">ADMIN</span></div>
+    <div class="nav-items">
+      <div class="nav-item active" onclick="goTab('reservations')"><span class="icon">📋</span> Réservations <span class="nav-badge" id="pending-badge">0</span></div>
+      <div class="nav-item" onclick="goTab('services')"><span class="icon">✂️</span> Services & Tarifs</div>
+      <div class="nav-item" onclick="goTab('photos')"><span class="icon">🖼️</span> Galerie Photos</div>
+      <div class="nav-item" onclick="goTab('calendar')"><span class="icon">📅</span> Calendrier</div>
+    </div>
+    <div class="sidebar-footer">
+      <a href="index.html" target="_blank" class="sidebar-link">🌐 Voir le site →</a>
+      <a href="#" class="sidebar-link" onclick="doLogout()">🚪 Déconnexion</a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- RESERVATIONS TAB -->
+    <div id="tab-reservations" class="tab-section active">
+      <div class="page-header">
+        <div class="page-title">Réservations</div>
+        <div class="page-sub">Gérez les demandes de rendez-vous</div>
+      </div>
+      <div class="stats-row" id="resa-stats"></div>
+      <div class="resa-filters">
+        <button class="filter-btn active" onclick="filterResa('all',this)">Toutes</button>
+        <button class="filter-btn" onclick="filterResa('pending',this)">En attente</button>
+        <button class="filter-btn" onclick="filterResa('confirmed',this)">Confirmées</button>
+        <button class="filter-btn" onclick="filterResa('cancelled',this)">Annulées</button>
+      </div>
+      <div class="resa-list" id="resa-list"></div>
+    </div>
+
+    <!-- SERVICES TAB -->
+    <div id="tab-services" class="tab-section">
+      <div class="page-header">
+        <div class="page-title">Services & Tarifs</div>
+        <div class="page-sub">Modifiez les prestations affichées sur le site</div>
+      </div>
+      <div class="services-editor" id="services-editor"></div>
+      <div class="add-btn" onclick="addService()">＋ Ajouter une prestation</div>
+      <div style="margin-top:1.5rem;">
+        <button class="btn-gold" onclick="saveServices()">Sauvegarder les services</button>
+      </div>
+    </div>
+
+    <!-- PHOTOS TAB -->
+    <div id="tab-photos" class="tab-section">
+      <div class="page-header">
+        <div class="page-title">Galerie Photos</div>
+        <div class="page-sub">Ajoutez ou supprimez des photos</div>
+      </div>
+      <div class="photo-grid" id="photo-grid"></div>
+      <div class="upload-zone" onclick="document.getElementById('photo-upload').click()">
+        <input type="file" id="photo-upload" accept="image/*" multiple onchange="uploadPhotos(this)">
+        <div class="upload-icon">📸</div>
+        <div class="upload-text">Cliquez pour ajouter des photos</div>
+        <div class="upload-sub">JPG, PNG, WEBP — plusieurs fichiers acceptés</div>
+      </div>
+    </div>
+
+    <!-- CALENDAR TAB -->
+    <div id="tab-calendar" class="tab-section">
+      <div class="page-header">
+        <div class="page-title">Calendrier</div>
+        <div class="page-sub">Bloquez des créneaux ou visualisez les RDV</div>
+      </div>
+      <div class="cal-controls">
+        <button class="cal-btn" onclick="changeMonth(-1)">◀</button>
+        <div class="cal-month" id="cal-month-label"></div>
+        <button class="cal-btn" onclick="changeMonth(1)">▶</button>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div style="margin-top:1rem;display:flex;gap:1.5rem;font-size:0.85rem;color:var(--grey);">
+        <span><span style="color:var(--gold)">●</span> RDV planifié</span>
+        <span><span style="color:var(--red)">●</span> Créneau bloqué</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SLOT MODAL -->
+<div class="slot-modal" id="slot-modal">
+  <div class="slot-modal-box">
+    <div class="slot-modal-title" id="slot-modal-title">Gérer les créneaux</div>
+    <div class="slots-list" id="slots-list"></div>
+    <div class="slot-modal-actions">
+      <button class="btn-outline" onclick="closeSlotModal()">Fermer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PASSWORD = 'julespcd';
+const HOURS = ['09:00','09:30','10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30'];
+
+// ─── AUTH ───
+function doLogin(){
+  const v = document.getElementById('pwd-input').value;
+  if(v === PASSWORD){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+  } else {
+    document.getElementById('login-error').style.display='block';
+    document.getElementById('pwd-input').value='';
+  }
+}
+function doLogout(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('pwd-input').value='';
+}
+
+// ─── TABS ───
+function goTab(name){
+  document.querySelectorAll('.tab-section').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if(name==='reservations') renderResas();
+  if(name==='services') renderServices();
+  if(name==='photos') renderPhotos();
+  if(name==='calendar') renderCalendar();
+}
+
+// ─── DATA ───
+function getData(key, def){ try{ return JSON.parse(localStorage.getItem('br_'+key)) || def; }catch(e){ return def; } }
+function setData(key, val){ localStorage.setItem('br_'+key, JSON.stringify(val)); }
+
+function defaultServices(){
+  return [
+    {id:1, name:'Coupe Classique', desc:'Coupe ciseaux ou tondeuse, shampoing, séchage et finition styling soignée.', price:'25'},
+    {id:2, name:'Rasage Traditionnel', desc:'Rasage au blaireau, serviette chaude et lame droite pour une finition rasoir.', price:'30'},
+    {id:3, name:'Coupe + Barbe', desc:'Pack complet coupe & taille de barbe avec modelage et soin hydratant.', price:'45'},
+    {id:4, name:'Forfait Premium', desc:'Coupe, rasage, soin du visage, modelage barbe et finitions haut de gamme.', price:'70'},
+    {id:5, name:'Taille Barbe', desc:'Sculpture et modelage de barbe avec produits de soin professionnels.', price:'20'},
+    {id:6, name:'Junior (- 12 ans)', desc:'Coupe enfant dans le calme et la bonne humeur, résultat garanti.', price:'18'},
+  ];
+}
+
+// ─── INIT ───
+function initApp(){
+  updatePendingBadge();
+  renderResas();
+}
+
+// ─── RESERVATIONS ───
+let resaFilter = 'all';
+function filterResa(f, btn){
+  resaFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderResas();
+}
+
+function renderResas(){
+  const resas = getData('reservations', []);
+  const pending = resas.filter(r=>r.status==='pending').length;
+  const confirmed = resas.filter(r=>r.status==='confirmed').length;
+  const cancelled = resas.filter(r=>r.status==='cancelled').length;
+  
+  document.getElementById('resa-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-val">${resas.length}</div><div class="stat-lbl">Total</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--gold)">${pending}</div><div class="stat-lbl">En attente</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--green)">${confirmed}</div><div class="stat-lbl">Confirmées</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:var(--red)">${cancelled}</div><div class="stat-lbl">Annulées</div></div>
+  `;
+
+  let filtered = resas;
+  if(resaFilter !== 'all') filtered = resas.filter(r=>r.status===resaFilter);
+  filtered = [...filtered].reverse();
+
+  const list = document.getElementById('resa-list');
+  if(filtered.length === 0){
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">Aucune réservation ${resaFilter !== 'all' ? 'dans cette catégorie' : 'pour le moment'}</div></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(r=>`
+    <div class="resa-card ${r.status}" id="resa-${r.id}">
+      <div class="resa-info">
+        <div class="resa-name">${r.prenom} ${r.nom}</div>
+        <div class="resa-details">
+          <span>📅 ${r.date} à ${r.heure}</span>
+          <span>✂️ ${r.service}</span>
+          <span>👤 ${r.barbeur}</span>
+          ${r.tel ? `<span>📞 ${r.tel}</span>` : ''}
+        </div>
+        ${r.message ? `<div style="margin-top:0.4rem;font-size:0.9rem;color:var(--grey);font-style:italic;">"${r.message}"</div>` : ''}
+      </div>
+      <div class="resa-actions">
+        <span class="status-badge ${r.status}">${r.status==='pending'?'En attente':r.status==='confirmed'?'Confirmé':'Annulé'}</span>
+        ${r.status==='pending' ? `<button class="btn-sm" onclick="updateResa(${r.id},'confirmed')">✓</button><button class="btn-danger" onclick="updateResa(${r.id},'cancelled')">✕</button>` : ''}
+        ${r.status==='confirmed' ? `<button class="btn-danger" onclick="updateResa(${r.id},'cancelled')">Annuler</button>` : ''}
+        <button class="btn-danger" onclick="deleteResa(${r.id})">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateResa(id, status){
+  const resas = getData('reservations', []);
+  const r = resas.find(x=>x.id===id);
+  if(r){ r.status=status; setData('reservations', resas); renderResas(); updatePendingBadge(); toast(status==='confirmed'?'✓ RDV confirmé':'✕ RDV annulé'); }
+}
+function deleteResa(id){
+  if(!confirm('Supprimer cette réservation ?')) return;
+  let resas = getData('reservations', []);
+  setData('reservations', resas.filter(r=>r.id!==id));
+  renderResas(); updatePendingBadge(); toast('Réservation supprimée');
+}
+function updatePendingBadge(){
+  const n = getData('reservations', []).filter(r=>r.status==='pending').length;
+  document.getElementById('pending-badge').textContent = n;
+  document.getElementById('pending-badge').style.display = n>0?'inline':'none';
+}
+
+// ─── SERVICES ───
+function renderServices(){
+  const services = getData('services', defaultServices());
+  const editor = document.getElementById('services-editor');
+  editor.innerHTML = services.map((s,i)=>`
+    <div class="service-editor-card">
+      <div class="form-group">
+        <label>Nom de la prestation</label>
+        <input type="text" value="${s.name}" data-i="${i}" data-field="name" onchange="updateServiceField(this)">
+      </div>
+      <div class="form-group">
+        <label>Prix (€)</label>
+        <input type="number" value="${s.price}" data-i="${i}" data-field="price" onchange="updateServiceField(this)" style="width:100px">
+      </div>
+      <button class="btn-danger" onclick="removeService(${s.id})">🗑</button>
+      <div class="form-group full">
+        <label>Description</label>
+        <input type="text" value="${s.desc}" data-i="${i}" data-field="desc" onchange="updateServiceField(this)">
+      </div>
+    </div>
+  `).join('');
+}
+
+let _services = null;
+function updateServiceField(el){
+  if(!_services) _services = getData('services', defaultServices());
+  _services[el.dataset.i][el.dataset.field] = el.value;
+}
+function addService(){
+  const services = getData('services', defaultServices());
+  services.push({id: Date.now(), name:'Nouvelle prestation', desc:'Description...', price:'0'});
+  setData('services', services); _services = null; renderServices();
+}
+function removeService(id){
+  if(!confirm('Supprimer cette prestation ?')) return;
+  let s = getData('services', defaultServices());
+  setData('services', s.filter(x=>x.id!==id)); _services = null; renderServices();
+}
+function saveServices(){
+  if(_services){ setData('services', _services); _services = null; }
+  toast('✓ Services sauvegardés !');
+}
+
+// ─── PHOTOS ───
+function renderPhotos(){
+  const photos = getData('photos', []);
+  const grid = document.getElementById('photo-grid');
+  grid.innerHTML = photos.map((p,i)=>`
+    <div class="photo-item">
+      <img src="${p.src}" alt="${p.label||''}">
+      <div class="photo-overlay">
+        <button class="photo-del" onclick="deletePhoto(${i})">Supprimer</button>
+      </div>
+      <div class="photo-label-input">
+        <input type="text" value="${p.label||''}" placeholder="Légende..." onchange="updatePhotoLabel(${i}, this.value)">
+      </div>
+    </div>
+  `).join('');
+  if(photos.length===0) grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:2rem;"><div class="empty-icon">🖼️</div><div class="empty-text">Aucune photo pour le moment</div></div>`;
+}
+
+function uploadPhotos(input){
+  const files = Array.from(input.files);
+  const photos = getData('photos', []);
+  let done = 0;
+  files.forEach(file=>{
+    const reader = new FileReader();
+    reader.onload = e=>{
+      photos.push({src: e.target.result, label:''});
+      done++;
+      if(done===files.length){ setData('photos', photos); renderPhotos(); toast(`✓ ${files.length} photo(s) ajoutée(s)`); }
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value='';
+}
+function deletePhoto(i){
+  if(!confirm('Supprimer cette photo ?')) return;
+  const photos = getData('photos', []);
+  photos.splice(i,1); setData('photos', photos); renderPhotos(); toast('Photo supprimée');
+}
+function updatePhotoLabel(i, val){
+  const photos = getData('photos', []); photos[i].label = val; setData('photos', photos);
+}
+
+// ─── CALENDAR ───
+let calYear, calMonth;
+function renderCalendar(){
+  const now = new Date();
+  if(calYear===undefined){ calYear=now.getFullYear(); calMonth=now.getMonth(); }
+  const blocked = getData('blocked', {});
+  const resas = getData('reservations', []);
+  const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  document.getElementById('cal-month-label').textContent = `${MONTHS[calMonth]} ${calYear}`;
+  const first = new Date(calYear, calMonth, 1);
+  const last = new Date(calYear, calMonth+1, 0);
+  let startDow = first.getDay(); if(startDow===0) startDow=7; startDow--;
+  let html = DAYS.map(d=>`<div class="cal-day-header">${d}</div>`).join('');
+  for(let i=0;i<startDow;i++){
+    const d = new Date(calYear, calMonth, -startDow+i+1);
+    html += `<div class="cal-day other-month"><div class="cal-day-num">${d.getDate()}</div></div>`;
+  }
+  for(let d=1;d<=last.getDate();d++){
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = now.getFullYear()===calYear && now.getMonth()===calMonth && now.getDate()===d;
+    const dayBlocked = blocked[dateStr]||[];
+    const dayResas = resas.filter(r=>r.date===dateStr && r.status!=='cancelled');
+    const bookedSlots = dayResas.map(r=>r.heure);
+    let chips = '';
+    dayBlocked.forEach(s=>{ if(!bookedSlots.includes(s)) chips += `<span class="slot-chip blocked">${s}</span>`; });
+    bookedSlots.forEach(s=>chips += `<span class="slot-chip booked">${s}</span>`);
+    const hasResa = dayResas.length > 0;
+    html += `<div class="cal-day${isToday?' today':''}${hasResa?' has-resa':''}" onclick="openSlotModal('${dateStr}')">
+      <div class="cal-day-num">${d}</div>
+      <div class="cal-day-slots">${chips}</div>
+    </div>`;
+  }
+  let remaining = 42 - startDow - last.getDate();
+  for(let i=1;i<=remaining;i++){
+    html += `<div class="cal-day other-month"><div class="cal-day-num">${i}</div></div>`;
+  }
+  document.getElementById('cal-grid').innerHTML = html;
+}
+
+function changeMonth(dir){
+  calMonth += dir;
+  if(calMonth>11){calMonth=0;calYear++;}
+  if(calMonth<0){calMonth=11;calYear--;}
+  renderCalendar();
+}
+
+let currentSlotDate = null;
+function openSlotModal(dateStr){
+  currentSlotDate = dateStr;
+  const blocked = getData('blocked', {});
+  const resas = getData('reservations', []);
+  const dayBlocked = blocked[dateStr]||[];
+  const dayResas = resas.filter(r=>r.date===dateStr && r.status!=='cancelled');
+  const bookedSlots = dayResas.map(r=>r.heure);
+  const [y,m,d] = dateStr.split('-');
+  document.getElementById('slot-modal-title').textContent = `Créneaux du ${d}/${m}/${y}`;
+  document.getElementById('slots-list').innerHTML = HOURS.map(h=>{
+    const isBooked = bookedSlots.includes(h);
+    const isBlocked = dayBlocked.includes(h);
+    const cls = isBooked?'booked':isBlocked?'blocked':'';
+    const title = isBooked?`RDV: ${dayResas.find(r=>r.heure===h)?.prenom||''} ${dayResas.find(r=>r.heure===h)?.nom||''}`.trim():'';
+    return `<div class="slot-toggle ${cls}" onclick="toggleSlot('${h}')" title="${title}">${h}${isBooked?' 📋':isBlocked?' 🔒':''}</div>`;
+  }).join('');
+  document.getElementById('slot-modal').classList.add('open');
+}
+
+function toggleSlot(h){
+  const blocked = getData('blocked', {});
+  const resas = getData('reservations', []);
+  const bookedSlots = resas.filter(r=>r.date===currentSlotDate && r.status!=='cancelled').map(r=>r.heure);
+  if(bookedSlots.includes(h)) return;
+  if(!blocked[currentSlotDate]) blocked[currentSlotDate]=[];
+  const idx = blocked[currentSlotDate].indexOf(h);
+  if(idx>-1) blocked[currentSlotDate].splice(idx,1);
+  else blocked[currentSlotDate].push(h);
+  setData('blocked', blocked);
+  openSlotModal(currentSlotDate);
+  renderCalendar();
+}
+
+function closeSlotModal(){
+  document.getElementById('slot-modal').classList.remove('open');
+  currentSlotDate=null;
+}
+document.getElementById('slot-modal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeSlotModal(); });
+
+// ─── TOAST ───
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
